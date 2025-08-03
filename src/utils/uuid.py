@@ -15,6 +15,6 @@ def create_uuid_from_list(lst:list[str])->uuid:
 
     #Create UUID value
     my_uuid=uuid.UUID(hex=hex_string)
-    my_uuid=str(my_uuid)
+    # my_uuid=str(my_uuid)
 
     return my_uuid

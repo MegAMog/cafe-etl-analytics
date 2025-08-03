@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import utils.path as path
+import etl.products as p
 
 
 #Specifie files
@@ -39,17 +40,17 @@ cleaned_data = raw_data.copy()
 #3.1 Convert into a correct format
 #-order_date should be string that represents a date -> to_datetime()
 cleaned_data ['order_date'] = pd.to_datetime(cleaned_data['order_date'], format='mixed')
-print(cleaned_data.info())
+# print(cleaned_data.info())
 
 #-bill should be float
 #errors='coerce' -> replace that value with NaN
 cleaned_data ['bill'] = pd.to_numeric(cleaned_data['bill'], errors='coerce')
 
-
 #3.2 Drop NULL/empty cells in place
 cleaned_data.dropna(inplace = True)
 
-print(cleaned_data.info())
-print(cleaned_data.head(10))
+#3.3 Transform data to fir DB Schema + added UUID
 
-
+#3.3.1 create products table
+products = p.transfrom_products(cleaned_data)
+print(products)
