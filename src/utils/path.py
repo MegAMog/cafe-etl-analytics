@@ -12,6 +12,3 @@ project_dir=os.path.dirname(os.path.dirname(root_dir))
 #DATA
 #Path to data directory
 data_dir=os.path.join(root_dir, "data")
-
-#Specifie files
-csv_file=os.path.join(data_dir, "leeds_sample.csv")
