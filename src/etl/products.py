@@ -30,7 +30,7 @@ def transform_products(data:pd.DataFrame) -> pd.DataFrame:
         lambda row: u.create_uuid_from_list([row['branch_name'], row['product_name'], str(row['price'])]), 
         axis=1)
     
-    #8. Drop branch name
-    products.drop(columns = ['branch_name'], inplace = True)
+    # #8. Drop branch name
+    # products.drop(columns = ['branch_name'], inplace = True)
 
     return products

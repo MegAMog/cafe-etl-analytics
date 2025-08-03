@@ -1,10 +1,11 @@
 import pandas as pd
 import os
 import utils.path as path
-import etl.products as p
+import utils.uuid as u
 import etl.branches as b
 import etl.payment_types as pt
 import etl.transactions as t
+import etl.order_snapshots as o
 
 #Specifie files
 csv_file = os.path.join(path.data_dir, "leeds_09-05-2023_09-00-00_done.csv")
@@ -19,7 +20,7 @@ raw_data = pd.read_csv(csv_file, names = column_names)
 #Print info about data in csv file(DataFrame object)
 # print(raw_data.info())
 
-# #Retrieve first 10 rows and print int out
+# #Retrieve f35713571irst 10 rows and print int out
 # limit_10 = raw_data.loc[0:9]
 # print(limit_10) 
 
@@ -51,10 +52,40 @@ cleaned_data ['bill'] = pd.to_numeric(cleaned_data['bill'], errors='coerce')
 #3.2 Drop NULL/empty cells in place
 cleaned_data.dropna(inplace = True)
 
-#3.3 Transform data to fir DB Schema + added UUID
+#3.3 Added UUIDs
+cleaned_data['order_id'] = cleaned_data.apply(
+    lambda row: u.create_uuid_from_list(
+        [
+            str(row['order_date']), 
+            row['branch_name'],
+            row['order_snapshot'],
+            str(row['bill']),
+            row['payment_type']
+        ]
+    ), axis=1)
 
-#-create products table
-products = p.transform_products(cleaned_data)
+cleaned_data['order_snapshot_id'] = cleaned_data.apply(
+    lambda row: u.create_uuid_from_list(
+        [
+            row['branch_name'],
+            row['order_snapshot']
+        ]
+    ), axis=1)
+
+cleaned_data['branch_id'] = cleaned_data.apply(
+    lambda row: u.create_uuid_from_list(
+        [
+            row['branch_name']
+        ]
+    ), axis=1)
+
+cleaned_data['payment_type_id'] = cleaned_data.apply(
+    lambda row: u.create_uuid_from_list(
+        [
+            row['payment_type']
+        ]
+    ), axis=1)
+
 
 #-create branch table
 branch = b.transform_branch(cleaned_data)
@@ -63,11 +94,7 @@ branch = b.transform_branch(cleaned_data)
 payment_types = pt.transform_payment_types(cleaned_data)
 
 #-create transactions
-transactions = t.transform_transactions(cleaned_data, branch, payment_types)
+transactions = t.transform_transactions(cleaned_data)
 
-
-
-print(products)
-print(branch)
-print(payment_types)
-print(transactions)
+#-create order_snapshot and products
+products, order_snapshots = o.transform_order_snapshots(cleaned_data)
