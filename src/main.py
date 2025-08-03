@@ -2,8 +2,9 @@ import pandas as pd
 import os
 import utils.path as path
 import etl.products as p
-import etl.branch as b
-
+import etl.branches as b
+import etl.payment_types as pt
+import etl.transactions as t
 
 #Specifie files
 csv_file = os.path.join(path.data_dir, "leeds_09-05-2023_09-00-00_done.csv")
@@ -53,10 +54,20 @@ cleaned_data.dropna(inplace = True)
 #3.3 Transform data to fir DB Schema + added UUID
 
 #-create products table
-products = p.transfrom_products(cleaned_data)
+products = p.transform_products(cleaned_data)
 
-#3.3.1 create branch table
-branch = b.transfrom_branch(cleaned_data)
+#-create branch table
+branch = b.transform_branch(cleaned_data)
+
+#-create payment_types
+payment_types = pt.transform_payment_types(cleaned_data)
+
+#-create transactions
+transactions = t.transform_transactions(cleaned_data, branch, payment_types)
+
+
 
 print(products)
 print(branch)
+print(payment_types)
+print(transactions)

@@ -2,9 +2,8 @@ import pandas as pd
 import utils.uuid as u
 
 #Create products table
-def transfrom_branch(data:pd.DataFrame) -> pd.DataFrame:
+def transform_branch(data:pd.DataFrame) -> pd.DataFrame:
     branch = data['branch_name'].copy().to_frame()
-    print(type(branch))
 
     #1. Remove empty/NULL values
     branch.dropna(inplace = True)

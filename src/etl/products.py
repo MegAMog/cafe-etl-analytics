@@ -2,7 +2,7 @@ import pandas as pd
 import utils.uuid as u
 
 #Create products table
-def transfrom_products(data:pd.DataFrame) -> pd.DataFrame:
+def transform_products(data:pd.DataFrame) -> pd.DataFrame:
     #1. Get only necessary columns for products
     products_raw = data[['branch_name', 'order_snapshot']].copy()
 
