@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import utils.path as path
 import etl.products as p
+import etl.branch as b
 
 
 #Specifie files
@@ -51,6 +52,11 @@ cleaned_data.dropna(inplace = True)
 
 #3.3 Transform data to fir DB Schema + added UUID
 
-#3.3.1 create products table
+#-create products table
 products = p.transfrom_products(cleaned_data)
+
+#3.3.1 create branch table
+branch = b.transfrom_branch(cleaned_data)
+
 print(products)
+print(branch)
