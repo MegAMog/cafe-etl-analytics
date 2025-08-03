@@ -14,7 +14,7 @@ column_names = ['order_date', 'branch_name', 'customer_name', 'order_snapshot', 
 raw_data = pd.read_csv(csv_file, names = column_names)
 
 #Print info about data in csv file(DataFrame object)
-print(raw_data.info())
+# print(raw_data.info())
 
 # #Retrieve first 10 rows and print int out
 # limit_10 = raw_data.loc[0:9]
@@ -22,13 +22,34 @@ print(raw_data.info())
 
 # #Retrieve header and first 10 rows and print int out -> use head() 
 # #Note: to see header and last 10 rows - use tail()
-print(raw_data.head(10))
+# print(raw_data.head(10))
 
 
 #Step 2: remove PII - customer name and card number
 #https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop.html
 pii_column_names = ['customer_name', 'customer_card_number']
-cleaned_data = raw_data.drop(columns = pii_column_names)
-print(cleaned_data)
+raw_data = raw_data.drop(columns = pii_column_names)
+# print(raw_data_without_pii.info())
+# print(raw_data_without_pii)
+
+
+#Step 3: normalize data to fit DB Schema + added UUID
+cleaned_data = raw_data.copy()
+
+#3.1 Convert into a correct format
+#-order_date should be string that represents a date -> to_datetime()
+cleaned_data ['order_date'] = pd.to_datetime(cleaned_data['order_date'], format='mixed')
+print(cleaned_data.info())
+
+#-bill should be float
+#errors='coerce' -> replace that value with NaN
+cleaned_data ['bill'] = pd.to_numeric(cleaned_data['bill'], errors='coerce')
+
+
+#3.2 Drop NULL/empty cells in place
+cleaned_data.dropna(inplace = True)
+
+print(cleaned_data.info())
+print(cleaned_data.head(10))
 
 
