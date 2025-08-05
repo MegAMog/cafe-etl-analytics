@@ -1,5 +1,5 @@
 import pandas as pd
-import utils.uuid as u
+import utils.uuid_str as u
 
 #Create products table
 def transform_payment_types(data:pd.DataFrame) -> pd.DataFrame:

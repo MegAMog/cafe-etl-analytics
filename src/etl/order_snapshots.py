@@ -1,5 +1,5 @@
 import pandas as pd
-import utils.uuid as u
+import utils.uuid_str as u
 
 #Create transactions table
 def transform_order_snapshots(data:pd.DataFrame) -> pd.DataFrame:
