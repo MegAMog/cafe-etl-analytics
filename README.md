@@ -1,2 +1,2 @@
 # cafe-etl-analytics
-Python ETL pipeline and sales analytics dashboard for cafe branches.
+Python ETL pipeline for cafe branches sales data.
