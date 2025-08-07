@@ -3,10 +3,10 @@ import os
 import utils.path as path
 import utils.uuid_str as u
 
-import etl.branches as b
-import etl.payment_types as pt
-import etl.transactions as t
-import etl.order_snapshots as o
+import etl.transform_branches as b
+import etl.transform_payment_types as pt
+import etl.transform_transactions as t
+import etl.transform_order_snapshots as o
 
 from etl.load_data import load_dataframe
 
